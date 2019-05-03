@@ -1,1 +1,1 @@
-# System76 Firmware Setup
+# System76 Platform GOP Policy
