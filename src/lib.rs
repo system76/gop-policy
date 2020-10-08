@@ -1,5 +1,4 @@
 #![no_std]
-// #![feature(asm)]
 // #![feature(const_fn)]
 // #![feature(core_intrinsics)]
 #![feature(prelude_import)]
