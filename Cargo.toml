@@ -3,11 +3,6 @@ name = "system76_gop_policy"
 version = "1.0.0"
 edition = "2018"
 
-[lib]
-name = "system76_gop_policy"
-path = "src/lib.rs"
-crate-type = ["staticlib"]
-
 [profile.release]
 lto = true
 
