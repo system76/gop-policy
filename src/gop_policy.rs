@@ -7,11 +7,12 @@ use uefi::guid::{Guid, NULL_GUID};
 use uefi::memory::PhysicalAddress;
 use uefi::status::{Error, Result, Status};
 
-static VBT: &'static [u8] = include_bytes!(env!("FIRMWARE_OPEN_VBT"));
+static VBT: &[u8] = include_bytes!(env!("FIRMWARE_OPEN_VBT"));
 
 pub static GOP_POLICY_GUID: Guid = Guid(0xec2e931b,0x3281,0x48a5,[0x81,0x7,0xdf,0x8a,0x8b,0xed,0x3c,0x5d]);
 pub const GOP_POLICY_REVISION: u32 = 0x03;
 
+#[allow(unused)]
 #[repr(C)]
 pub enum LidStatus {
     LidClosed,
@@ -19,6 +20,7 @@ pub enum LidStatus {
     LidStatusMax,
 }
 
+#[allow(unused)]
 #[repr(C)]
 pub enum DockStatus {
     Docked,
@@ -48,7 +50,7 @@ extern "win64" fn GetVbtData(VbtAddress: *mut PhysicalAddress, VbtSize: *mut u32
     Status(0)
 }
 
-extern "win64" fn GetPlatformDockStatus(CurrentDockStatus: DockStatus) -> Status {
+extern "win64" fn GetPlatformDockStatus(_CurrentDockStatus: DockStatus) -> Status {
     Status::from_error(Error::Unsupported)
 }
 
