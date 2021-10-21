@@ -8,5 +8,5 @@ license = "GPL-3.0-only"
 lto = true
 
 [dependencies]
-redox_uefi = "0.1.1"
-redox_uefi_std = "0.1.4"
+redox_uefi = "0.1.2"
+redox_uefi_std = "0.1.5"

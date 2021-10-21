@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
-use core::ops::Try;
+use core::ops::FromResidual;
 use uefi::Handle;
 use uefi::boot::InterfaceType;
 use uefi::guid::{Guid, NULL_GUID};
@@ -30,7 +30,7 @@ pub enum DockStatus {
 
 extern "win64" fn GetPlatformLidStatus(CurrentLidStatus: *mut LidStatus) -> Status {
     if CurrentLidStatus.is_null() {
-        return Status::from_error(Error::InvalidParameter);
+        return Status::from_residual(Error::InvalidParameter);
     }
 
     // TODO: Get real lid status
@@ -41,7 +41,7 @@ extern "win64" fn GetPlatformLidStatus(CurrentLidStatus: *mut LidStatus) -> Stat
 
 extern "win64" fn GetVbtData(VbtAddress: *mut PhysicalAddress, VbtSize: *mut u32) -> Status {
     if VbtAddress.is_null() || VbtSize.is_null() {
-        return Status::from_error(Error::InvalidParameter);
+        return Status::from_residual(Error::InvalidParameter);
     }
 
     unsafe { *VbtAddress = PhysicalAddress(VBT.as_ptr() as u64) };
@@ -51,7 +51,7 @@ extern "win64" fn GetVbtData(VbtAddress: *mut PhysicalAddress, VbtSize: *mut u32
 }
 
 extern "win64" fn GetPlatformDockStatus(_CurrentDockStatus: DockStatus) -> Status {
-    Status::from_error(Error::Unsupported)
+    Status::from_residual(Error::Unsupported)
 }
 
 #[repr(C)]
