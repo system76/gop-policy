@@ -14,7 +14,7 @@ extern crate uefi_std as std;
 use std::prelude::*;
 
 use core::ops::FromResidual;
-use uefi::status::Status;
+use std::uefi::status::Status;
 
 mod gop_policy;
 
