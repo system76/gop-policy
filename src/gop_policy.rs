@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 use core::ops::FromResidual;
-use uefi::Handle;
-use uefi::boot::InterfaceType;
-use uefi::guid::{Guid, NULL_GUID};
-use uefi::memory::PhysicalAddress;
-use uefi::status::{Error, Result, Status};
+use std::uefi::Handle;
+use std::uefi::boot::InterfaceType;
+use std::uefi::guid::{Guid, NULL_GUID};
+use std::uefi::memory::PhysicalAddress;
+use std::uefi::status::{Error, Result, Status};
 
 static VBT: &[u8] = include_bytes!(env!("FIRMWARE_OPEN_VBT"));
 

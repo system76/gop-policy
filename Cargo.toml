@@ -1,12 +1,11 @@
 [package]
 name = "system76_gop_policy"
 version = "1.0.0"
-edition = "2018"
+edition = "2021"
 license = "GPL-3.0-only"
 
 [profile.release]
 lto = true
 
 [dependencies]
-redox_uefi = "0.1.2"
-redox_uefi_std = "0.1.5"
+redox_uefi_std = "0.1.9"
