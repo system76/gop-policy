@@ -2,15 +2,12 @@
 
 #![no_std]
 #![no_main]
-#![feature(prelude_import)]
 #![feature(try_trait_v2)]
 #![allow(non_snake_case)]
 
 #[macro_use]
 extern crate uefi_std as std;
 
-#[allow(unused_imports)]
-#[prelude_import]
 use std::prelude::*;
 
 use core::ops::FromResidual;

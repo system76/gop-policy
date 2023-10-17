@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 use core::ops::FromResidual;
+use std::prelude::*;
 use std::uefi::Handle;
 use std::uefi::boot::InterfaceType;
 use std::uefi::guid::{Guid, NULL_GUID};
