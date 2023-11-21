@@ -3,33 +3,24 @@
 version = 3
 
 [[package]]
-name = "redox_uefi"
-version = "0.1.10"
+name = "r-efi"
+version = "4.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4143e69d22c9f79fd22cb37859a06af4936741c8ef70b5d6338953717feb68a5"
+checksum = "575fc2d9b3da54adbdfaddf6eca48fec256d977c8630a1750b8991347d1ac911"
 
 [[package]]
-name = "redox_uefi_alloc"
-version = "0.1.10"
+name = "r-efi-alloc"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d12654bc506da36550bbd8e77438be985b839afdc98c0956fc7fd10fa9b45022"
+checksum = "31d6f09fe2b6ad044bc3d2c34ce4979796581afd2f1ebc185837e02421e02fd7"
 dependencies = [
- "redox_uefi",
-]
-
-[[package]]
-name = "redox_uefi_std"
-version = "0.1.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9dea5dc3b2366e4611520a4983b27aa11f373c86f774eff1fd3f93d040c0ebd"
-dependencies = [
- "redox_uefi",
- "redox_uefi_alloc",
+ "r-efi",
 ]
 
 [[package]]
 name = "system76_gop_policy"
 version = "1.0.0"
 dependencies = [
- "redox_uefi_std",
+ "r-efi",
+ "r-efi-alloc",
 ]
