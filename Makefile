@@ -43,7 +43,7 @@ $(BUILD)/boot.efi: Cargo.lock Cargo.toml src/*
 	mkdir -p $(BUILD)
 	cargo rustc \
 		-Z build-std=core,alloc \
-		--target $(TARGET) \
+		--target=$(TARGET) \
 		--release \
 		-- \
 		-C soft-float \
