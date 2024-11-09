@@ -2,16 +2,12 @@
 
 #![no_std]
 #![no_main]
-#![feature(try_trait_v2)]
 #![allow(non_snake_case)]
 
 #[macro_use]
 extern crate uefi_std as std;
 
 use std::prelude::*;
-
-use core::ops::FromResidual;
-use std::uefi::status::Status;
 
 mod gop_policy;
 
@@ -20,8 +16,8 @@ pub extern "C" fn main() -> Status {
     let gop_policy = gop_policy::GopPolicy::new();
     if let Err(err) = gop_policy.install() {
         println!("GopPolicy error: {:?}", err);
-        Status::from_residual(err)
+        err
     } else {
-        Status(0)
+        Status::SUCCESS
     }
 }
