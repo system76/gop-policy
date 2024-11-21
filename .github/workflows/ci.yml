@@ -4,6 +4,9 @@ on:
     branches: [master]
   pull_request:
 
+env:
+    FIRMWARE_OPEN_VBT: "../lemp9.vbt"
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -12,10 +15,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt install --yes make mtools parted
+        sudo apt install --no-install-recommends --assume-yes just rustup
         rustup show
 
-    - name: Build UEFI application
-      env:
-          FIRMWARE_OPEN_VBT: "../lemp9.vbt"
-      run: make
+    - name: clippy
+      run: just clippy -- -D warnings
+
+    - name: fmt
+      run: just fmt --check
+
+    - name: build
+      run: just build --release

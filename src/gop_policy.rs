@@ -9,6 +9,7 @@ static VBT: &[u8] = include_bytes!(env!("FIRMWARE_OPEN_VBT"));
 pub static GOP_POLICY_GUID: Guid = guid!("ec2e931b-3281-48a5-8107-df8a8bed3c5d");
 pub const GOP_POLICY_REVISION: u32 = 0x03;
 
+#[allow(clippy::enum_variant_names)]
 #[allow(unused)]
 #[repr(C)]
 pub enum LidStatus {
@@ -17,6 +18,7 @@ pub enum LidStatus {
     LidStatusMax,
 }
 
+#[allow(clippy::enum_variant_names)]
 #[allow(unused)]
 #[repr(C)]
 pub enum DockStatus {
@@ -51,6 +53,7 @@ extern "win64" fn GetPlatformDockStatus(_CurrentDockStatus: DockStatus) -> Statu
     Status::UNSUPPORTED
 }
 
+#[rustfmt::skip]
 #[repr(C)]
 pub struct GopPolicy {
     pub Revision: u32,
@@ -80,7 +83,7 @@ impl GopPolicy {
             &mut handle,
             &GOP_POLICY_GUID,
             InterfaceType::Native,
-            self_ptr as usize
+            self_ptr as usize,
         ))?;
 
         //let _ = (uefi.BootServices.UninstallProtocolInterface)(handle, &GOP_POLICY_GUID, self_ptr as usize);

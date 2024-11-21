@@ -1,4 +1,5 @@
 [toolchain]
 channel = "nightly-2024-05-11"
 targets = ["x86_64-unknown-uefi"]
+components = ["clippy", "rustfmt"]
 profile = "minimal"

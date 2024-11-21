@@ -6,4 +6,4 @@
   VERSION_STRING                 = 1.0
 
 [Binaries.X64]
-  PE32|build/x86_64-unknown-uefi/boot.efi|*
+  PE32|target/x86_64-unknown-uefi/release/system76_gop_policy.efi|*
