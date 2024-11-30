@@ -12,7 +12,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt install --yes make mtools parted
+        sudo apt install --yes make
         rustup show
 
     - name: Build UEFI application

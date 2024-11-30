@@ -1,9 +1,9 @@
 [Defines]
-  INF_VERSION                    = 0x00010005
+  INF_VERSION                    = 1.5
   BASE_NAME                      = system76-gop-policy
   FILE_GUID                      = 769a745f-ecb0-492e-aa57-d1d5123f0e16
   MODULE_TYPE                    = UEFI_DRIVER
   VERSION_STRING                 = 1.0
 
 [Binaries.X64]
-  PE32|build/x86_64-unknown-uefi/boot.efi|*
+  PE32|target/x86_64-unknown-uefi/release/system76_gop_policy.efi|*
