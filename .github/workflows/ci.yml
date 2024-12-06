@@ -13,7 +13,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt install --yes make
-        rustup show
+        rustup show active-toolchain || rustup toolchain install
 
     - name: Build UEFI application
       env:
