@@ -4,7 +4,6 @@
 #![allow(unused)]
 
 use std::prelude::*;
-use std::uefi::boot::InterfaceType;
 use std::uefi::memory::PhysicalAddress;
 
 static VBT: &[u8] = include_bytes!(env!("FIRMWARE_OPEN_VBT"));
@@ -72,29 +71,10 @@ extern "efiapi" fn GetPlatformDockStatus(_CurrentDockStatus: DockStatus) -> Stat
     Status::UNSUPPORTED
 }
 
-impl GopPolicy {
-    pub fn new() -> Box<Self> {
-        Box::new(Self {
-            Revision: Self::REVISION_03,
-            GetPlatformLidStatus,
-            GetVbtData,
-            GetPlatformDockStatus,
-            GopOverrideGuid: Guid::NULL,
-        })
-    }
-
-    pub fn install(self: Box<Self>) -> Result<()> {
-        let uefi = unsafe { std::system_table_mut() };
-
-        let self_ptr = Box::into_raw(self);
-        let mut handle = Handle(0);
-        Result::from((uefi.BootServices.InstallProtocolInterface)(
-            &mut handle,
-            &Self::GUID,
-            InterfaceType::Native,
-            self_ptr as usize,
-        ))?;
-
-        Ok(())
-    }
-}
+pub static GOP_POLICY: GopPolicy = GopPolicy {
+    Revision: GopPolicy::REVISION_03,
+    GetPlatformLidStatus,
+    GetVbtData,
+    GetPlatformDockStatus,
+    GopOverrideGuid: Guid::NULL,
+};
