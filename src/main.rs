@@ -3,20 +3,23 @@
 #![no_std]
 #![no_main]
 
-#[macro_use]
 extern crate uefi_std as std;
-
-use std::prelude::*;
 
 mod gop_policy;
 
+use gop_policy::{GopPolicy, GOP_POLICY};
+use std::prelude::*;
+use std::uefi::boot::InterfaceType;
+
 #[no_mangle]
 pub extern "C" fn main() -> Status {
-    let gop_policy = gop_policy::GopPolicy::new();
-    if let Err(err) = gop_policy.install() {
-        println!("GopPolicy error: {:?}", err);
-        err
-    } else {
-        Status::SUCCESS
-    }
+    let uefi = unsafe { std::system_table_mut() };
+    let mut handle = Handle(0);
+
+    (uefi.BootServices.InstallProtocolInterface)(
+        &mut handle,
+        &GopPolicy::GUID,
+        InterfaceType::Native,
+        core::ptr::addr_of!(GOP_POLICY) as usize,
+    )
 }
