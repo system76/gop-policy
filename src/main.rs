@@ -11,7 +11,7 @@ use gop_policy::{GopPolicy, GOP_POLICY};
 use std::prelude::*;
 use std::uefi::boot::InterfaceType;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn main() -> Status {
     let uefi = unsafe { std::system_table_mut() };
     let mut handle = Handle(0);
