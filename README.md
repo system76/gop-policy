@@ -1,16 +1,24 @@
 # System76 Platform GOP Policy
 
-A VBT file is required for building.
+A driver that installs the Intel Platform GOP Policy protocol. Requires a VBT
+file included in the UEFI FFS with a specific GUID.
 
 ```
-FIRMWARE_OPEN_VBT=../lemp9.vbt make
+FILE FREEFORM = 56752da9-de6b-4895-8819-1945b6b76c22 {
+  SECTION RAW = vbt.rom
+  SECTION UI = "IntelGopVbt"
+}
+```
+
+```
+make
 ```
 
 The `qemu` target will use the target directory as a pseudo-drive so the
 driver files can be viewed.
 
 ```
-FIRMWARE_OPEN_VBT=../lemp9.vbt make qemu
+make qemu
 ```
 
 In QEMU, the driver can be loaded using the UEFI Shell `load` command.

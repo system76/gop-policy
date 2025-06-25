@@ -16,6 +16,4 @@ jobs:
         rustup show active-toolchain || rustup toolchain install
 
     - name: Build UEFI application
-      env:
-          FIRMWARE_OPEN_VBT: "../lemp9.vbt"
       run: make

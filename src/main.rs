@@ -7,7 +7,7 @@ extern crate uefi_std as std;
 
 mod gop_policy;
 
-use gop_policy::{GopPolicy, GOP_POLICY};
+use gop_policy::{GOP_POLICY, GopPolicy};
 use std::prelude::*;
 use std::uefi::boot::InterfaceType;
 
