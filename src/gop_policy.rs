@@ -2,10 +2,12 @@
 
 #![allow(unused)]
 
-use std::prelude::*;
-use std::uefi::boot::LocateSearchType;
-use std::uefi::firmware_volume::{FirmwareVolume2, SectionType};
-use std::uefi::memory::PhysicalAddress;
+use uefi::boot::{OpenProtocolParams, SearchType};
+use uefi::data_types::PhysicalAddress;
+use uefi::prelude::*;
+use uefi::{Guid, guid};
+use uefi_raw::protocol::firmware_volume::FirmwareVolume2Protocol;
+use uefi_raw::protocol::firmware_volume::SectionType;
 
 // From edk2
 const VBT_FILE_GUID: Guid = guid!("56752da9-de6b-4895-8819-1945b6b76c22");
@@ -68,50 +70,52 @@ extern "efiapi" fn get_vbt_data(vbt_address: *mut PhysicalAddress, vbt_size: *mu
     }
 
     let mut status = Status::SUCCESS;
-    let st = unsafe { std::system_table_mut() };
+
+    let st = uefi::table::system_table_raw().unwrap();
+    let st = unsafe { st.as_ref() };
 
     // Multiple FVs in the FD, so check all.
-    let mut count = 0;
-    let mut hbuffer = core::ptr::null_mut();
-    status = (st.BootServices.LocateHandleBuffer)(
-        LocateSearchType::ByProtocol,
-        &FirmwareVolume2::GUID,
-        core::ptr::null(),
-        &mut count,
-        &mut hbuffer,
-    );
-    if status.is_error() {
-        return Status::NOT_FOUND;
-    }
+    let hbuffer = match uefi::boot::locate_handle_buffer(SearchType::ByProtocol(
+        &FirmwareVolume2Protocol::GUID,
+    )) {
+        Ok(buf) => buf,
+        Err(e) => return e.status(),
+    };
 
-    let handles = unsafe { core::slice::from_raw_parts(hbuffer, count) };
-    for handle in handles {
-        let mut interface = 0;
-        status = (st.BootServices.HandleProtocol)(*handle, &FirmwareVolume2::GUID, &mut interface);
+    for handle in hbuffer.iter() {
+        let mut interface = core::ptr::null_mut();
+        status = unsafe {
+            ((*st.boot_services).handle_protocol)(
+                handle.as_ptr(),
+                &FirmwareVolume2Protocol::GUID,
+                &mut interface,
+            )
+        };
 
         let mut vbt_ptr = core::ptr::null_mut();
         let mut vbt_len = 0;
         let mut auth_status = 0;
 
-        let fv: &FirmwareVolume2 = unsafe { &*(interface as *const FirmwareVolume2) };
-        status = (fv.ReadSection)(
-            fv,
-            &VBT_FILE_GUID,
-            SectionType::RAW,
-            0,
-            &mut vbt_ptr,
-            &mut vbt_len,
-            &mut auth_status,
-        );
+        let fv: &FirmwareVolume2Protocol =
+            unsafe { &*(interface as *const FirmwareVolume2Protocol) };
+        status = unsafe {
+            (fv.read_section)(
+                fv,
+                &VBT_FILE_GUID,
+                SectionType::RAW,
+                0,
+                &mut vbt_ptr,
+                &mut vbt_len,
+                &mut auth_status,
+            )
+        };
 
         if status.is_success() {
-            unsafe { *vbt_address = PhysicalAddress(vbt_ptr as u64) };
+            unsafe { *vbt_address = vbt_ptr as PhysicalAddress };
             unsafe { *vbt_size = vbt_len as u32 };
             break;
         }
     }
-
-    (st.BootServices.FreePool)(hbuffer as usize);
 
     status
 }
@@ -125,5 +129,5 @@ pub static GOP_POLICY: GopPolicy = GopPolicy {
     get_platform_lid_status,
     get_vbt_data,
     get_platform_dock_status,
-    gop_override_guid: Guid::NULL,
+    gop_override_guid: Guid::ZERO,
 };

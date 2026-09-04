@@ -8,4 +8,5 @@ license = "GPL-3.0-only"
 lto = true
 
 [dependencies]
-redox_uefi_std = "0.1.14"
+uefi = { version = "0.40", features = ["panic_handler"] }
+uefi-raw = "0.16"
